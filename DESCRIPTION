@@ -1,0 +1,11 @@
+Package: jabaronUtil
+Type: Package
+Title: Utility Functions for Data Analysis
+Version: 0.1.0
+Author: J. Allen Baron
+Maintainer: J. Allen Baron <jabaron.phd@gmail.com>
+Description: Collection of functions for data analysis, including
+    differential gene expression with DESeq2
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
