@@ -36,31 +36,31 @@ audit_df <- function(df, ...) {
     # doesn't print well when knitted!
 
     list(
-        invariant_vars = show_invariant_vars(df),
-        identical_vars = show_identical_vars(df),
-        details = enumerate_miss_uniq(df, ...)
+        invariant_vars = identify_invariant(df),
+        identical_vars = identify_identical(df),
+        details = map_values(df, ...)
     )
 }
 
 
-enumerate_miss_uniq <- function(df, ...) {
+map_values <- function(df, ...) {
 
     full_join(
-        show_missing_by_var(df),
-        show_unique_by_var(df, ...),
+        map_missing(df),
+        map_unique(df, ...),
         by = "var"
     )
 }
 
 
-show_invariant_vars <- function(df) {
+identify_invariant <- function(df) {
     # Returns value for variables with only one value
 
     dplyr::select_if(df, ~n_distinct(.) == 1)[1, ]
 }
 
 
-show_identical_vars <- function(df) {
+identify_identical <- function(df) {
     # Returns variables in a data.frame that are identical (strict)
 
     vars <- names(df)
@@ -86,7 +86,7 @@ show_identical_vars <- function(df) {
 }
 
 
-show_missing_by_var <- function(df) {
+map_missing <- function(df) {
     # Count missing observations for all variables in a df
 
     n <- map_int(df, ~sum(is.na(.x)))
@@ -95,53 +95,53 @@ show_missing_by_var <- function(df) {
 }
 
 
-show_unique_by_var <- function(df, return_vals = "string", sep = " | ", ignore_NA = TRUE) {
+map_unique <- function(df, vals = "as_string", sep = " | ", ignore_NA = TRUE) {
     # Returns count & list (in nested df) of unique values for
     #   all variables in a df
-    #   return_vals = one of "none", "string", "list", or "both"; where "string"
+    #   vals = one of "none", "as_string", "as_list", or "both"; where "string"
     #       returns a column with unique values pasted together and "list"
     #       returns a column with unique values as a nested list
     #   sep = separator to use in paste
 
     if(
-        length(return_vals) > 1 ||
-        !(return_vals %in% c("none", "string", "list", "both"))
+        length(vals) > 1 ||
+        !(vals %in% c("none", "as_string", "as_list", "both"))
     ) {
-        stop("return_vals must be one of 'none', 'string', 'list', or 'both'")
+        stop("vals must be one of 'none', 'as_string', 'as_list', or 'both'")
     }
 
     n <- purrr::map_int(df, n_distinct, na.rm = ignore_NA)
 
-    if (return_vals == "none") {
+    if (vals == "none") {
         return(
             tibble::tibble(var = names(df), unique_n = n)
         )
     }
 
-    vals <- purrr::map(df, unique)
+    val_list <- purrr::map(df, unique)
 
     if (ignore_NA) {
-        vals <- purrr::map(vals, ~ .x[!is.na(.x)])
+        val_list <- purrr::map(val_list, ~ .x[!is.na(.x)])
     }
 
-    if (return_vals == "list") {
+    if (vals == "as_list") {
         return(
-            tibble::tibble(var = names(df), unique_n = n, unique_list = vals)
+            tibble::tibble(var = names(df), unique_n = n, unique_as_list = val_list)
         )
     }
 
-    val_strings <- purrr::map(vals, paste0, collapse = sep) %>%
+    val_strings <- purrr::map(val_list, paste0, collapse = sep) %>%
         unlist()
 
-    if (return_vals == "string") {
+    if (vals == "as_string") {
         return(
             tibble::tibble(
-                var = names(df), unique_n = n, unique_string = val_strings
+                var = names(df), unique_n = n, unique_as_string = val_strings
             )
         )
     }
 
     tibble::tibble(
-        var = names(df), unique_n = n, unique_string = val_strings, unique_list = vals
+        var = names(df), unique_n = n, unique_as_string = val_strings, unique_as_list = val_list
     )
 }
