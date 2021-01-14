@@ -45,10 +45,15 @@ audit_df <- function(df, ...) {
 
 map_values <- function(df, ...) {
 
-    full_join(
+    x <- list(
+        map_type(df),
         map_missing(df),
-        map_unique(df, ...),
-        by = "var"
+        map_unique(df, ...)
+    )
+
+    Reduce(
+        function(x, y) full_join(x, y, by = "var"),
+        x
     )
 }
 
