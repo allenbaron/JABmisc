@@ -23,7 +23,7 @@ as_matrix <- function(x){
     # From hciR package (github: https://github.com/HuntsmanCancerInstitute/hciR/blob/master/R/as_matrix.R)
     # Author: Chris Stubben
 
-    if(!tibble::is_tibble(x) ) stop("x must be a tibble")
+    if (!tibble::is_tibble(x)) stop("x must be a tibble")
     y <- as.matrix.data.frame(x[,-1])
     rownames(y) <- x[[1]]
     y
@@ -115,12 +115,13 @@ map_missing <- function(df) {
 map_unique <- function(df, vals = "as_string", sep = " | ", ignore_NA = TRUE) {
     # Returns count & list (in nested df) of unique values for
     #   all variables in a df
-    #   vals = one of "none", "as_string", "as_list", or "both"; where "string"
-    #       returns a column with unique values pasted together and "list"
-    #       returns a column with unique values as a nested list
+    #   vals = one of "none", "as_string", "as_list", or "both"; where
+    #       "as_string" returns a column with unique values pasted together,
+    #       "as_list" returns a column with unique values as a nested list,
+    #       "both" returns both of these columns
     #   sep = separator to use in paste
 
-    if(
+    if (
         length(vals) > 1 ||
         !(vals %in% c("none", "as_string", "as_list", "both"))
     ) {
@@ -137,13 +138,17 @@ map_unique <- function(df, vals = "as_string", sep = " | ", ignore_NA = TRUE) {
 
     val_list <- purrr::map(df, unique)
 
-    if (ignore_NA) {
+    if (isTRUE(ignore_NA)) {
         val_list <- purrr::map(val_list, ~ .x[!is.na(.x)])
     }
 
     if (vals == "as_list") {
         return(
-            tibble::tibble(var = names(df), unique_n = n, unique_as_list = val_list)
+            tibble::tibble(
+                var = names(df),
+                unique_n = n,
+                unique_as_list = val_list
+            )
         )
     }
 
