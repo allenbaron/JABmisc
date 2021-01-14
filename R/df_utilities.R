@@ -86,6 +86,18 @@ identify_identical <- function(df) {
 }
 
 
+map_type <- function(df) {
+    # Returns class of variables in a dataframe
+
+    tibble(
+        var = names(df),
+        type = map_chr(df, vctrs::vec_ptype_abbr)
+                # approach w/o vctrs pkg
+                #abbreviate(map_chr(df, typeof), minlength = 3)
+    )
+}
+
+
 map_missing <- function(df) {
     # Count missing observations for all variables in a df
 
