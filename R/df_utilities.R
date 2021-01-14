@@ -152,8 +152,22 @@ map_unique <- function(df, vals = "as_string", sep = " | ", ignore_NA = TRUE) {
         )
     }
 
-    val_strings <- purrr::map(val_list, paste0, collapse = sep) %>%
-        unlist()
+    val_strings <- purrr::map_chr(
+        val_list,
+        function(val_list) {
+            if (is.list(val_list[1])) {
+                len <- range(map_int(val_list, length), na.rm = TRUE)
+                len_print <- if_else(
+                    len[1] == len[2],
+                    as.character(len[1]),
+                    paste0(len[1], ":", len[2])
+                )
+                paste0(typeof(val_list), "[", len_print, "]")
+            } else {
+                paste0(val_list, collapse = sep)
+            }
+        }
+    )
 
     if (vals == "as_string") {
         return(
