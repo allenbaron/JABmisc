@@ -49,14 +49,14 @@ describe_cols <- function(df, ...) {
 }
 
 
-#' Returns value for columns with only one value
+# Returns value for columns with only one value
 identify_invariant <- function(df) {
 
     dplyr::select_if(df, ~dplyr::n_distinct(.) == 1)[1, ]
 }
 
 
-#' Returns columns in a data.frame that are identical (strict)
+# Returns columns in a data.frame that are identical (strict)
 identify_identical <- function(df) {
 
     cols <- names(df)
@@ -82,7 +82,7 @@ identify_identical <- function(df) {
 }
 
 
-#' Show column types (as tibble)
+# Show column types (as tibble)
 map_type <- function(df) {
 
     tibble::tibble(
