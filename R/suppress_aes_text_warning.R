@@ -4,6 +4,8 @@
 #' Intended for cosmetic purposes when printing as a ggplot object.
 #' Unnecessary, if converting to plotly for use as hovertext with `ggplotly()`.
 #'
+#' @param ggplot_obj a ggplot object, see [ggplot][ggplot2::ggplot]
+#'
 #' @examples
 #' requireNamespace("ggplot2", quietly = TRUE)
 #'
@@ -16,7 +18,7 @@
 #' suppress_aes_text_warning(g)
 #'
 #' @export
-suppress_aes_text_warning <- function(ggplot2_expr) {
+suppress_aes_text_warning <- function(ggplot_obj) {
 
     if (!requireNamespace("ggplot2", quietly = TRUE)) {
         err_msg <- paste(
@@ -28,7 +30,7 @@ suppress_aes_text_warning <- function(ggplot2_expr) {
     }
 
     withCallingHandlers(
-        {ggplot2_expr},
+        {ggplot_obj},
         warning = function(w) {
             if (conditionMessage(w) == "Ignoring unknown aesthetics: text") {
                 invokeRestart("muffleWarning")

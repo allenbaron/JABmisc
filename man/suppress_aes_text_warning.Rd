@@ -4,7 +4,10 @@
 \alias{suppress_aes_text_warning}
 \title{Suppress ggplot2 warning when using text aesthetic for plotly}
 \usage{
-suppress_aes_text_warning(ggplot2_expr)
+suppress_aes_text_warning(ggplot_obj)
+}
+\arguments{
+\item{ggplot_obj}{a ggplot object, see \link[ggplot2:ggplot]{ggplot}}
 }
 \description{
 Suppresses unknown aesthetic warning when providing a \code{text} aesthetic.
