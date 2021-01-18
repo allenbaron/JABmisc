@@ -15,6 +15,10 @@ round_up <- function(x, digits = -1, ...) {
     # digits indicates how many 0's (1 = 10, 2 = 100),
     #   negative numbers accepted (-1 = 0.1)
 
+    if (digits == 0) {
+        return(ceiling(x))
+    }
+
     place <- 10^(-digits)
     x + place - x %% place
 }
