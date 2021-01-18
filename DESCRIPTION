@@ -6,7 +6,7 @@ Author: J. Allen Baron
 Maintainer: J. Allen Baron <jabaron.phd@gmail.com>
 Description: Collection of functions for data analysis (includes unexported
     raw functions for differential gene expression with DESeq2, for future
-    reference)
+    reference).
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -15,7 +15,7 @@ Suggests:
     ggplot2
 RoxygenNote: 7.1.1
 Roxygen: list(markdown = TRUE)
-Imports: 
+Imports:
     tibble,
     purrr,
     dplyr,
