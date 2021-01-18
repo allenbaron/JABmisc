@@ -1,5 +1,20 @@
+#' Audit a data frame
+#'
+#' Initial data frame inspection. Lists columns that are invariant
+#' (single-value) and identical, along with a data frame
+#' describing the values by column (column type, missing, and unique values).
+#'
+#' @section NOTE:
+#' Data.frames print as individual list in rmarkdown when knitted.
+#'
+#' @return List of `length(3)` showing: invariant columns, identical columns,
+#' and column descriptions.
+#'
+#' @inheritParams describe_cols
+#'
+#' @seealso [describe_cols()]
+#' @export
 audit_df <- function(df, ...) {
-    # doesn't print well when knitted!
 
     list(
         invariant_cols = identify_invariant(df),
@@ -9,6 +24,16 @@ audit_df <- function(df, ...) {
 }
 
 
+#' Describe the columns in a data frame
+#'
+#' For each column in a data.frame, `describe_cols()` shows the column type,
+#' number and percentage of missing values, and number of unique values
+#' (optionally with the values themselves--see [map_unique()] for details).
+#'
+#' @inheritParams map_unique
+#' @param ... additional arguments passed on to [map_unique()]
+#'
+#' @export
 describe_cols <- function(df, ...) {
 
     x <- list(
@@ -24,15 +49,15 @@ describe_cols <- function(df, ...) {
 }
 
 
+#' Returns value for columns with only one value
 identify_invariant <- function(df) {
-    # Returns value for variables with only one value
 
     dplyr::select_if(df, ~n_distinct(.) == 1)[1, ]
 }
 
 
+#' Returns columns in a data.frame that are identical (strict)
 identify_identical <- function(df) {
-    # Returns variables in a data.frame that are identical (strict)
 
     cols <- names(df)
     primary <- cols[1]
@@ -57,8 +82,8 @@ identify_identical <- function(df) {
 }
 
 
+#' Show column types (as tibble)
 map_type <- function(df) {
-    # Returns class of variables in a dataframe
 
     tibble(
         var = names(df),
@@ -69,8 +94,10 @@ map_type <- function(df) {
 }
 
 
+#' Show missing observations for all columns in a data frame
+#'
+#' @param df a data.frame
 map_missing <- function(df) {
-    # Count missing observations for all variables in a df
 
     n <- map_int(df, ~sum(is.na(.x)))
     percent <- round(n / nrow(df) * 100, 1)
@@ -78,20 +105,29 @@ map_missing <- function(df) {
 }
 
 
+#' Report unique values for each column of a data.frame
+#'
+#' For each column in a data.frame, `map_unique()` shows the number of unique
+#' values and, optionally, the values themselves.
+#'
+#' @param df a data.frame
+#' @param vals a string describing how to display unique values; one of:
+#'
+#' * "as_string" (default): for values as a concatenated string
+#' (for quick viewing)
+#' * "as_list": for values as a column of lists
+#' * "both": for concatenated string AND list columns
+#' * "none"
+#' @param sep a character string to separate the values; used with "as_string"
+#' @param ignore_NA logical; whether to include missing (`NA`) values in report;
+#' affects both count and values displayed
 map_unique <- function(df, vals = "as_string", sep = " | ", ignore_NA = TRUE) {
-    # Returns count & list (in nested df) of unique values for
-    #   all variables in a df
-    #   vals = one of "none", "as_string", "as_list", or "both"; where
-    #       "as_string" returns a column with unique values pasted together,
-    #       "as_list" returns a column with unique values as a nested list,
-    #       "both" returns both of these columns
-    #   sep = separator to use in paste
 
     if (
         length(vals) > 1 ||
         !(vals %in% c("none", "as_string", "as_list", "both"))
     ) {
-        stop("vals must be one of 'none', 'as_string', 'as_list', or 'both'")
+        stop("vals must be one of 'as_string', 'as_list', 'both', or 'none'")
     }
 
     n <- purrr::map_int(df, n_distinct, na.rm = ignore_NA)
