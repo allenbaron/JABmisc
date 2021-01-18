@@ -12,8 +12,12 @@ Intended for cosmetic purposes when printing as a ggplot object.
 Unnecessary, if converting to plotly for use as hovertext with \code{ggplotly()}.
 }
 \examples{
-g <- ggplot(iris) +
-    geom_point(aes(x = Sepal.Length, y = Sepal.Width, text = Species))
+requireNamespace("ggplot2", quietly = TRUE)
+
+g <- ggplot2::ggplot(iris) +
+    ggplot2::geom_point(
+        ggplot2::aes(x = Sepal.Length, y = Sepal.Width, text = Species)
+    )
 g
 
 suppress_aes_text_warning(g)
