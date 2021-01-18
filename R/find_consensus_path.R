@@ -1,8 +1,26 @@
+#' Identify shared path of subdirectories
+#'
+#' Identify the recursive path (subdirectories) which most files have in common
+#' within a specified directory.
+#'
+#' @section Example Usage:
+#' Identify the consensus path of an `renv` project library when other
+#' unrelated and less file-dense directories are present in a given top-level
+#' directory. (I used this on a HPCC to determine where R files were being
+#' installed to when setting up R with renv and conda.)
+#'
+#' @section NOTE:
+#' This is a first-pass implementation and may be slow. The implementation
+#' identifies all files recursively below the specified directory and returns
+#' the file path shared by the majority of files (currently 80%).
+#'
+#' @return a file path, beginning with `top_lvl_dir`
+#'
+#' @param top_lvl_dir the path to the directory to search within
+#'
+#' @export
 find_consensus_path <- function(top_lvl_dir) {
-    # Identify recursive path of subdirectories all files have in common
-    #   starting at top_lvl_dir
-    # NOTE: Uses only base R functions for flexibility;
-    #   raw implementation = not fast
+
     dir_list <- list.dirs(top_lvl_dir)
     dir_split <- strsplit(dir_list, "/", fixed = TRUE)
     max_length <- max(vapply(dir_split, function(x) {length(x)}, integer(1)))
