@@ -3,6 +3,7 @@
 export(audit_df)
 export(describe_cols)
 export(filter_list)
+export(find_consensus_path)
 export(format_num)
 export(round_up)
 export(suppress_aes_text_warning)

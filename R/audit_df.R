@@ -43,7 +43,7 @@ describe_cols <- function(df, ...) {
     )
 
     Reduce(
-        function(x, y) full_join(x, y, by = "var"),
+        function(x, y) dplyr::full_join(x, y, by = "var"),
         x
     )
 }
@@ -52,7 +52,7 @@ describe_cols <- function(df, ...) {
 #' Returns value for columns with only one value
 identify_invariant <- function(df) {
 
-    dplyr::select_if(df, ~n_distinct(.) == 1)[1, ]
+    dplyr::select_if(df, ~dplyr::n_distinct(.) == 1)[1, ]
 }
 
 
@@ -66,30 +66,30 @@ identify_identical <- function(df) {
     i <- 1
 
     while (length(compare) > 0) {
-        idx <- map_lgl(compare, ~identical(df[[primary]], df[[.x]]))
+        idx <- purrr::map_lgl(compare, ~identical(df[[primary]], df[[.x]]))
 
         if (sum(idx) == 0) {
             primary <- compare[1]
             compare <- compare[-1]
         } else {
-            out[[i]] <- tibble(var = primary, identical = compare[idx])
+            out[[i]] <- tibble::tibble(var = primary, identical = compare[idx])
             primary <- compare[!idx][1]
             compare <- compare[!idx][-1]
             i <- i + 1
         }
     }
-    bind_rows(out)
+    dplyr::bind_rows(out)
 }
 
 
 #' Show column types (as tibble)
 map_type <- function(df) {
 
-    tibble(
+    tibble::tibble(
         var = names(df),
-        type = map_chr(df, vctrs::vec_ptype_abbr)
+        type = purrr::map_chr(df, vctrs::vec_ptype_abbr)
                 # approach w/o vctrs pkg
-                #abbreviate(map_chr(df, typeof), minlength = 3)
+                #abbreviate(purrr::map_chr(df, typeof), minlength = 3)
     )
 }
 
@@ -99,9 +99,9 @@ map_type <- function(df) {
 #' @param df a data.frame
 map_missing <- function(df) {
 
-    n <- map_int(df, ~sum(is.na(.x)))
+    n <- purrr::map_int(df, ~sum(is.na(.x)))
     percent <- round(n / nrow(df) * 100, 1)
-    tibble(var = names(df), missing_n = n, missing_percent = percent)
+    tibble::tibble(var = names(df), missing_n = n, missing_percent = percent)
 }
 
 
@@ -130,7 +130,7 @@ map_unique <- function(df, vals = "as_string", sep = " | ", ignore_NA = TRUE) {
         stop("vals must be one of 'as_string', 'as_list', 'both', or 'none'")
     }
 
-    n <- purrr::map_int(df, n_distinct, na.rm = ignore_NA)
+    n <- purrr::map_int(df, dplyr::n_distinct, na.rm = ignore_NA)
 
     if (vals == "none") {
         return(
@@ -158,8 +158,8 @@ map_unique <- function(df, vals = "as_string", sep = " | ", ignore_NA = TRUE) {
         val_list,
         function(val_list) {
             if (is.list(val_list[1])) {
-                len <- range(map_int(val_list, length), na.rm = TRUE)
-                len_print <- if_else(
+                len <- range(purrr::map_int(val_list, length), na.rm = TRUE)
+                len_print <- dplyr::if_else(
                     len[1] == len[2],
                     as.character(len[1]),
                     paste0(len[1], ":", len[2])
@@ -180,6 +180,9 @@ map_unique <- function(df, vals = "as_string", sep = " | ", ignore_NA = TRUE) {
     }
 
     tibble::tibble(
-        var = names(df), unique_n = n, unique_as_string = val_strings, unique_as_list = val_list
+        var = names(df),
+        unique_n = n,
+        unique_as_string = val_strings,
+        unique_as_list = val_list
     )
 }
