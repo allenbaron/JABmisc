@@ -20,3 +20,5 @@ Imports:
     purrr,
     dplyr,
     vctrs
+URL: https://github.com/allenbaron/JABmisc
+BugReports: https://github.com/allenbaron/JABmisc/issues
