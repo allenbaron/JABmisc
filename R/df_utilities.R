@@ -4,12 +4,12 @@ audit_df <- function(df, ...) {
     list(
         invariant_vars = identify_invariant(df),
         identical_vars = identify_identical(df),
-        details = map_values(df, ...)
+        description = describe_cols(df, ...)
     )
 }
 
 
-map_values <- function(df, ...) {
+describe_cols <- function(df, ...) {
 
     x <- list(
         map_type(df),
