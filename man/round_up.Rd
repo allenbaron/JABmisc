@@ -4,7 +4,7 @@
 \alias{round_up}
 \title{Round a number up}
 \usage{
-round_up(x, digits = -1, ...)
+round_up(x, digits = -1)
 }
 \arguments{
 \item{x}{a numeric vector.}

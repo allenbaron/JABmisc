@@ -9,7 +9,7 @@
 #' values are allowed (see 'Details').
 #'
 #' @export
-round_up <- function(x, digits = -1, ...) {
+round_up <- function(x, digits = -1) {
     # Self-explanatory; use = specify the upper limit for an axis providing some buffer
     #
     # digits indicates how many 0's (1 = 10, 2 = 100),
