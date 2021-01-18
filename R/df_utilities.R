@@ -2,8 +2,8 @@ audit_df <- function(df, ...) {
     # doesn't print well when knitted!
 
     list(
-        invariant_vars = identify_invariant(df),
-        identical_vars = identify_identical(df),
+        invariant_cols = identify_invariant(df),
+        identical_cols = identify_identical(df),
         description = describe_cols(df, ...)
     )
 }
@@ -34,9 +34,9 @@ identify_invariant <- function(df) {
 identify_identical <- function(df) {
     # Returns variables in a data.frame that are identical (strict)
 
-    vars <- names(df)
-    primary <- vars[1]
-    compare <- vars[-1]
+    cols <- names(df)
+    primary <- cols[1]
+    compare <- cols[-1]
     out <- list()
     i <- 1
 
