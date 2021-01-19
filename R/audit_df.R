@@ -43,7 +43,7 @@ describe_cols <- function(df, ...) {
     )
 
     Reduce(
-        function(x, y) dplyr::full_join(x, y, by = "var"),
+        function(x, y) dplyr::full_join(x, y, by = "col"),
         x
     )
 }
@@ -72,7 +72,7 @@ identify_identical <- function(df) {
             primary <- compare[1]
             compare <- compare[-1]
         } else {
-            out[[i]] <- tibble::tibble(var = primary, identical = compare[idx])
+            out[[i]] <- tibble::tibble(col= primary, identical = compare[idx])
             primary <- compare[!idx][1]
             compare <- compare[!idx][-1]
             i <- i + 1
@@ -86,7 +86,7 @@ identify_identical <- function(df) {
 map_type <- function(df) {
 
     tibble::tibble(
-        var = names(df),
+        col = names(df),
         type = purrr::map_chr(df, vctrs::vec_ptype_abbr)
                 # approach w/o vctrs pkg
                 #abbreviate(purrr::map_chr(df, typeof), minlength = 3)
@@ -101,7 +101,7 @@ map_missing <- function(df) {
 
     n <- purrr::map_int(df, ~sum(is.na(.x)))
     percent <- round(n / nrow(df) * 100, 1)
-    tibble::tibble(var = names(df), missing_n = n, missing_percent = percent)
+    tibble::tibble(col = names(df), missing_n = n, missing_percent = percent)
 }
 
 
@@ -134,7 +134,7 @@ map_unique <- function(df, vals = "as_string", sep = " | ", ignore_NA = TRUE) {
 
     if (vals == "none") {
         return(
-            tibble::tibble(var = names(df), unique_n = n)
+            tibble::tibble(col = names(df), unique_n = n)
         )
     }
 
@@ -147,7 +147,7 @@ map_unique <- function(df, vals = "as_string", sep = " | ", ignore_NA = TRUE) {
     if (vals == "as_list") {
         return(
             tibble::tibble(
-                var = names(df),
+                col = names(df),
                 unique_n = n,
                 unique_as_list = val_list
             )
@@ -174,13 +174,13 @@ map_unique <- function(df, vals = "as_string", sep = " | ", ignore_NA = TRUE) {
     if (vals == "as_string") {
         return(
             tibble::tibble(
-                var = names(df), unique_n = n, unique_as_string = val_strings
+                col = names(df), unique_n = n, unique_as_string = val_strings
             )
         )
     }
 
     tibble::tibble(
-        var = names(df),
+        colld= names(df),
         unique_n = n,
         unique_as_string = val_strings,
         unique_as_list = val_list

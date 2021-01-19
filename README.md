@@ -33,7 +33,7 @@ example with the `airquality` dataset:
 library(JABmisc)
 describe_cols(airquality)
 #> # A tibble: 6 x 6
-#>   var    type  missing_n missing_percent unique_n unique_as_string              
+#>   col    type  missing_n missing_percent unique_n unique_as_string              
 #>   <chr>  <chr>     <int>           <dbl>    <int> <chr>                         
 #> 1 Ozone  int          37            24.2       67 41 | 36 | 12 | 18 | 28 | 23 |~
 #> 2 Solar~ int           7             4.6      117 190 | 118 | 149 | 313 | 299 |~
