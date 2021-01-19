@@ -1,0 +1,51 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+
+# JABmisc
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+The goal of JABmisc is to improve data analysis workflows by: 
+
+1. simplifying initial data exploration
+2. providing functions to fill gaps in data manipulation/munging/wrangling
+
+
+## Installation
+
+JABmisc currently only exists in a development version. You can install this version from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("allenbaron/JABmisc")
+```
+
+
+## Examples
+
+To get a quick look at a tabular dataset (after loading) use `describe_cols()` or the full-functioning `audit_df()`. Here's an example with the `airquality` dataset:
+
+```{r example}
+library(JABmisc)
+describe_cols(airquality)
+```
+
+Other available functions in this package:
+
+- filter lists by name or value (`filter_list()`)
+- perform numeric formatting (`round_up()`, `format_num()`)
+- or, are _TOTALLY_ miscellaneous and provide functionality to help in random, odd use-cases where I've needed them (e.g. `find_consensus_path()`)
