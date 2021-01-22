@@ -1,12 +1,11 @@
 Package: JABmisc
 Type: Package
 Title: Utility Functions for Data Analysis
-Version: 0.1.0
+Version: 0.0.1
 Author: J. Allen Baron
 Maintainer: J. Allen Baron <jabaron.phd@gmail.com>
-Description: Collection of functions for data analysis (includes unexported
-    raw functions for differential gene expression with DESeq2, for future
-    reference).
+Description: A collection of functions for initial exploration
+    of data, formatting numbers, and other miscellaneous needs.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
